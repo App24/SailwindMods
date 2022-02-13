@@ -21,8 +21,10 @@ namespace SleepImprovement.Patches
                 var anyButtonDown = AccessTools.Method(typeof(Sleep), "AnyButtonDown");
                 if (GameState.inBed && (bool)anyButtonDown.Invoke(__instance, new object[] { }) && ___currentBedDuration > 1.01f)
                 {
+                    // Going to sleep/already sleeping
                     if (GameState.sleeping)
                     {
+                        // Is sleeping
                         if (GameState.eyesFullyClosed)
                         {
                             if (Main.settings.WakeUpAnytime)
