@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using SailwindModdingHelper;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,7 +21,7 @@ namespace TweaksAndFixes.Patches
 			{
 				if (Main.enabled)
 				{
-					Main.saveContainer.Save(Main.mod.Info.Id);
+					Main.saveContainer.Save();
 				}
 				AddPrefabPatch.indexCounter = 0;
 				SaveablePrefabPatches.PrepareSaveDataPatch.saveablePrefabs = new Dictionary<SaveablePrefab, int>();
@@ -44,7 +45,7 @@ namespace TweaksAndFixes.Patches
 				{
 					GameState.modData = saveContainer.modData;
 				}
-				Main.saveContainer = Main.mod.Info.Id.Load<TAFSaveContainer>();
+				Main.saveContainer = ModSaveContainer.Load<TAFSaveContainer>(Main.mod);
 			}
 
 			[HarmonyPostfix]
