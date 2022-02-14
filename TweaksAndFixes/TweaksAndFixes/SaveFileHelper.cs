@@ -23,7 +23,6 @@ namespace TweaksAndFixes
 			return Activator.CreateInstance<T>();
 		}
 
-		// Token: 0x06000002 RID: 2 RVA: 0x000020DC File Offset: 0x000002DC
 		public static void Save<T>(this T toSerialize, string modName)
 		{
 			XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
