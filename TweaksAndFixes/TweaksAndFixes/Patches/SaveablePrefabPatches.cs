@@ -45,7 +45,7 @@ namespace TweaksAndFixes.Patches
 			{
 				indexCounter++;
 				ShipItemLampHookItemHooked component = ___item.GetComponent<ShipItemLampHookItemHooked>();
-				if (component)
+				if (component && component.hookedItem)
 				{
 					SaveablePrefab saveablePrefab = component.hookedItem.GetComponent<SaveablePrefab>();
 					if (saveablePrefab && saveablePrefabs.TryGetValue(saveablePrefab, out int index))
