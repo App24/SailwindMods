@@ -29,6 +29,7 @@ namespace TweaksAndFixes
         }
 
         public static bool enabled;
+        public static bool paused;
         public static UnityModManager.ModEntry mod;
         public static TAFSaveContainer saveContainer = new TAFSaveContainer();
     }
