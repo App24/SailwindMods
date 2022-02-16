@@ -23,10 +23,16 @@ namespace CoordinateViewer.Patches
                 }
                 if (Input.GetKey(KeyCode.LeftAlt))
                 {
+                    showCoords = !showCoords;
+                }
+                if (showCoords)
+                {
                     Vector3 globePos = FloatingOriginManager.instance.GetGlobeCoords(__instance.transform);
                     NotificationUi.instance.ShowNotification($"Longitude: {globePos.x:0.000}\nLatitude: {globePos.z:0.000}");
                 }
             }
+
+            static bool showCoords;
         }
     }
 }
