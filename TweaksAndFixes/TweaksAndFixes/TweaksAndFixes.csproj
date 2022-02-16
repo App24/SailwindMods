@@ -66,6 +66,14 @@
     <Reference Include="UnityEngine.PhysicsModule">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Sailwind\Sailwind_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Sailwind\Sailwind_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Sailwind\Sailwind_Data\Managed\UnityEngine.UI.dll</HintPath>
+    </Reference>
     <Reference Include="UnityModManager">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Sailwind\Sailwind_Data\Managed\UnityModManager\UnityModManager.dll</HintPath>
     </Reference>
@@ -74,6 +82,8 @@
     <Compile Include="Main.cs" />
     <Compile Include="Patches\BoatCameraPatches.cs" />
     <Compile Include="Patches\BottleDrinkingPatches.cs" />
+    <Compile Include="Patches\MissionDetailsUIPatches.cs" />
+    <Compile Include="Patches\MissionListUIPatches.cs" />
     <Compile Include="Patches\MouthColPatches.cs" />
     <Compile Include="Patches\PlayerClimbPatches.cs" />
     <Compile Include="Patches\PlayerCrouchingPatches.cs" />
