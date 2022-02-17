@@ -42,17 +42,17 @@ namespace SkipDisclaimer.Patches
         public static class QuickStartPosPatch
         {
             [HarmonyPrefix]
-            public static bool Prefix(StartMenu __instance, Transform startPos, ref GameObject ___logo, ref Transform ___playerObserver, ref GameObject ___playerController, ref PurchasableBoat[] ___startingBoats, ref int ___currentRegion, ref GameObject ___disclaimer, ref bool ___waitingForFInput, ref bool ___fPressed, ref int ___animsPlaying)
+            public static bool Prefix(StartMenu __instance, Transform startPos, ref GameObject ___logo, ref Transform ___playerObserver, ref GameObject ___playerController, ref PurchasableBoat[] ___startingBoats, ref int ___currentRegion, ref GameObject ___disclaimer, ref bool ___waitingForFInput, ref bool ___fPressed)
             {
                 if (Main.enabled)
                 {
-                    __instance.StartCoroutine(MovePlayerToStartPos(__instance, startPos, ___logo, ___playerObserver, ___playerController, ___startingBoats, ___currentRegion, ___disclaimer, ___fPressed, ___animsPlaying));
+                    __instance.StartCoroutine(MovePlayerToStartPos(__instance, startPos, ___logo, ___playerObserver, ___playerController, ___startingBoats, ___currentRegion, ___disclaimer, ___fPressed));
                     return false;
                 }
                 return true;
             }
 
-            public static IEnumerator MovePlayerToStartPos(StartMenu instance, Transform startPos, GameObject logo, Transform playerObserver, GameObject playerController, PurchasableBoat[] startingBoats, int currentRegion, GameObject disclaimer, bool fPressed, int animsPlaying)
+            public static IEnumerator MovePlayerToStartPos(StartMenu instance, Transform startPos, GameObject logo, Transform playerObserver, GameObject playerController, PurchasableBoat[] startingBoats, int currentRegion, GameObject disclaimer, bool fPressed)
             {
                 logo.SetActive(false);
                 playerObserver.transform.parent = instance.transform.parent;
@@ -88,7 +88,8 @@ namespace SkipDisclaimer.Patches
                 GameState.playing = true;
                 GameState.justStarted = true;
                 MouseLook.ToggleMouseLook(true);
-                animsPlaying--;
+                int animsPlaying= (int)Traverse.Create(instance).Field("animsPlaying").GetValue();
+                Traverse.Create(instance).Field("animsPlaying").SetValue(animsPlaying-1);
                 yield return new WaitForSeconds(1f);
                 GameState.justStarted = false;
                 yield break;

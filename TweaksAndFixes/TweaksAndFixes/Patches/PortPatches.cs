@@ -13,6 +13,16 @@ namespace TweaksAndFixes.Patches
     {
 		public static MissionSorting missionSorting = MissionSorting.PricePerKM;
 
+		[HarmonyPatch(typeof(Port), "Start")]
+		public static class StartPatch
+        {
+			[HarmonyPostfix]
+			public static void Postfix(Port __instance)
+            {
+				__instance.gameObject.AddComponent<MissionStoring>();
+            }
+        }
+
         [HarmonyPatch(typeof(Port), "GenerateMissions")]
         public static class GenerateMissionsPatch
         {
@@ -53,17 +63,28 @@ namespace TweaksAndFixes.Patches
 						}
 					}
 				}
-				list.Sort(SortMissions);
 				___currentMissionCount = list.Count;
-				for (int k = 0; k < ___missions.Length; k++)
-				{
-					if (k + num < list.Count)
-					{
-						___missions[k] = list[k + num];
-					}
-				}
+				MissionStoring missionStoringcomponent = __instance.gameObject.GetComponent<MissionStoring>();
+				missionStoringcomponent.page = num;
+				missionStoringcomponent.missions = list;
+				list.Sort(SortMissions);
+				SortMissions(__instance);
 				return false;
             }
+
+			public static void SortMissions(Port instance)
+            {
+				MissionStoring missionStoringcomponent = instance.gameObject.GetComponent<MissionStoring>();
+				Mission[] missions = (Mission[])Traverse.Create(instance).Field("missions").GetValue();
+				for (int k = 0; k < missions.Length; k++)
+				{
+					if (k + missionStoringcomponent.page < missionStoringcomponent.missions.Count)
+					{
+						missions[k] = missionStoringcomponent.missions[k + missionStoringcomponent.page];
+					}
+				}
+				Traverse.Create(instance).Field("missions").SetValue(missions);
+			}
 
 			private static int SortMissions(Mission s2, Mission s1)
             {

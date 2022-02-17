@@ -34,5 +34,15 @@ namespace TweaksAndFixes.Patches
                 }
             }
         }
+
+        /*[HarmonyPatch(typeof(StartMenu), "EnableSettingsMenu")]
+        public static class EnableSettingsMenuPatch
+        {
+            [HarmonyPostfix]
+            public static void Postfix()
+            {
+                //SunPatches.buttonGameObject.SetActive(GameState.playing);
+            }
+        }*/
     }
 }
