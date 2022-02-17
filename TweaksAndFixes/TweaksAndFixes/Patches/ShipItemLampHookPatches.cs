@@ -11,19 +11,6 @@ namespace TweaksAndFixes.Patches
 {
     public static class ShipItemLampHookPatches
     {
-        [HarmonyPatch(typeof(ShipItem), "Awake")]
-        public static class AwakePatch
-        {
-            [HarmonyPrefix]
-            public static void Prefix(ShipItem __instance)
-            {
-                if (Main.enabled && __instance is ShipItemLampHook)
-                {
-                    __instance.gameObject.AddComponent<ShipItemLampHookItemHooked>();
-                }
-            }
-        }
-
         [HarmonyPatch(typeof(ShipItemLampHook), "OnEnterInventory")]
         public static class OnEnterInventoryPatch
         {

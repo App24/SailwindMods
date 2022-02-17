@@ -87,6 +87,8 @@
     <Compile Include="Patches\MouthColPatches.cs" />
     <Compile Include="Patches\PlayerClimbPatches.cs" />
     <Compile Include="Patches\PlayerCrouchingPatches.cs" />
+    <Compile Include="Patches\PortPatches.cs" />
+    <Compile Include="Patches\ShipItemPatches.cs" />
     <Compile Include="Patches\StartMenuPatches.cs" />
     <Compile Include="Patches\SaveablePrefabPatches.cs" />
     <Compile Include="Patches\SaveLoadManagerPatches.cs" />
@@ -94,7 +96,10 @@
     <Compile Include="Patches\ShipItemScrollPatches.cs" />
     <Compile Include="Patches\WindClothPatches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scripts\MissionSorting.cs" />
     <Compile Include="Scripts\ShipItemLampHookItemHooked.cs" />
+    <Compile Include="Scripts\ShipItemMoveOnAltActivate.cs" />
+    <Compile Include="Scripts\ShipItemRotateOnAltActivate.cs" />
     <Compile Include="TAFSaveContainer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
