@@ -11,7 +11,7 @@ namespace TweaksAndFixes.Patches
 {
     internal static class PortPatches
     {
-		public static MissionSorting missionSorting = MissionSorting.PricePerKM;
+		public static MissionSorting missionSorting = MissionSorting.PricePerMile;
 
 		[HarmonyPatch(typeof(Port), "Start")]
 		public static class StartPatch
@@ -54,9 +54,9 @@ namespace TweaksAndFixes.Patches
 							if (flag)
 							{
 								int demand = port.island.GetDemand(prefabIndex);
-								
-								int totalPrice = (int)AccessTools.Method(typeof(Port), "GetTotalPrice").Invoke(__instance, new object[] { prefabIndex, port, demand });
-								int dueDay = (int)AccessTools.Method(typeof(Port), "GetDueDay").Invoke(__instance, new object[] { port, component });
+
+								int totalPrice = __instance.InvokePrivateMethod<int>("GetTotalPrice", prefabIndex, port, demand);
+								int dueDay = __instance.InvokePrivateMethod<int>("GetDueDay", port, component);
 								Mission item = new Mission(__instance, port, gameObject, demand, totalPrice, 1f, 0, dueDay);
 								list.Add(item);
 							}
@@ -75,7 +75,7 @@ namespace TweaksAndFixes.Patches
 			public static void SortMissions(Port instance)
             {
 				MissionStoring missionStoringcomponent = instance.gameObject.GetComponent<MissionStoring>();
-				Mission[] missions = (Mission[])Traverse.Create(instance).Field("missions").GetValue();
+				Mission[] missions = instance.GetPrivateField<Mission[]>("missions");
 				for (int k = 0; k < missions.Length; k++)
 				{
 					if (k + missionStoringcomponent.page < missionStoringcomponent.missions.Count)
@@ -83,14 +83,14 @@ namespace TweaksAndFixes.Patches
 						missions[k] = missionStoringcomponent.missions[k + missionStoringcomponent.page];
 					}
 				}
-				Traverse.Create(instance).Field("missions").SetValue(missions);
+				instance.SetPrivateField("missions", missions);
 			}
 
 			private static int SortMissions(Mission s2, Mission s1)
             {
                 switch (missionSorting)
 				{
-					case MissionSorting.PricePerKM:
+					case MissionSorting.PricePerMile:
 						{
 							return s1.pricePerKm.CompareTo(s2.pricePerKm);
 						}

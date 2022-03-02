@@ -61,12 +61,6 @@ namespace TweaksAndFixes.Patches
 									item2.localPosition = new Vector3(item2.localPosition.x, item2.localPosition.y - 0.106f, item2.localPosition.z);
                                 }
                             }
-                            else
-                            {
-								if(item2.name== "accept/cancel button")
-                                {
-                                }
-                            }
                         }
                     }
                     foreach (Transform item in ___UI.transform.parent)
@@ -86,7 +80,7 @@ namespace TweaksAndFixes.Patches
 									gameObject.name = "sort button";
 									GameObject buttonGameobject = gameObject.GetComponentInChildren<GoPointerButton>().gameObject;
 									GameObject.Destroy(buttonGameobject.GetComponent<GoPointerButton>());
-									MissionSortButton button = buttonGameobject.AddComponent<MissionSortButton>();
+									GPMissionSortButton button = buttonGameobject.AddComponent<GPMissionSortButton>();
 									button.text = gameObject.GetComponentInChildren<TextMesh>();
 									button.UpdateText();
 								}
@@ -111,15 +105,15 @@ namespace TweaksAndFixes.Patches
 				}
 				if (___mapZoomedIn)
 				{
-					AccessTools.Method(typeof(MissionDetailsUI), "ZoomMap").Invoke(__instance, new object[] { false });
+					__instance.InvokePrivateMethod("ZoomMap", false);
 					return false;
 				}
 				if (___currentMission.missionIndex == -1)
 				{
 					PlayerMissions.AcceptMission(___currentMission);
-					MissionListUI.instance.DisplayMissions(___currentMission.originPort.GetMissions((int)Traverse.Create(MissionListUI.instance).Field("currentPage").GetValue()));
+					MissionListUI.instance.DisplayMissions(___currentMission.originPort.GetMissions(MissionListUI.instance.GetPrivateField<int>("currentPage")));
 					___UI.SetActive(false);
-					AccessTools.Method(typeof(MissionDetailsUI), "UpdateTexts").Invoke(__instance, new object[] { });
+					__instance.InvokePrivateMethod("UpdateTexts");
 					return false;
 				}
 				return true;

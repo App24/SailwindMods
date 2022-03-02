@@ -12,7 +12,9 @@ namespace TweaksAndFixes.Patches
 {
     internal static class SunPatches
     {
-        /*public static GameObject buttonGameObject;
+        public static GameObject quitWithoutSavingButton;
+        public static GameObject quitButton;
+        public static Vector3 originalQuitPos;
 
         [HarmonyPatch(typeof(Sun), "Start")]
         public static class StartPatch
@@ -23,50 +25,30 @@ namespace TweaksAndFixes.Patches
                 StartMenu startMenu = GameObject.FindObjectOfType<StartMenu>();
                 if (startMenu)
                 {
-                    GameObject settingsUi = (GameObject)Traverse.Create(startMenu).Field("settingsUI").GetValue();
+                    GameObject settingsUi = (GameObject)Traverse.Create(startMenu).Field("confirmQuitUI").GetValue();
                     foreach (Transform child in settingsUi.transform)
                     {
                         if (child.name == "button quit")
                         {
-                            buttonGameObject = GameObject.Instantiate(child.gameObject);
-                            buttonGameObject.name = "button mod menu";
-                            buttonGameObject.transform.parent = settingsUi.transform;
-                            buttonGameObject.transform.localPosition = new Vector3(3.55f, 2.8f, 0.037f);
-                            buttonGameObject.transform.localRotation = Quaternion.Euler(180, 1.366038e-05f,180);
-                            buttonGameObject.transform.localScale = Vector3.one;
-                            GameObject gameObject = buttonGameObject.GetComponentInChildren<StartMenuButton>().gameObject;
+                            quitButton = child.gameObject;
+                            originalQuitPos = child.localPosition;
+
+                            quitWithoutSavingButton = GameObject.Instantiate(child.gameObject);
+                            quitWithoutSavingButton.name = "button quit no save";
+                            quitWithoutSavingButton.transform.parent = settingsUi.transform;
+                            quitWithoutSavingButton.transform.localPosition = new Vector3(-0.486f, -0.311f, 0.036f);
+                            quitWithoutSavingButton.transform.localRotation = Quaternion.Euler(180, 1.366038e-05f, 180);
+                            quitWithoutSavingButton.transform.localScale = Vector3.one;
+                            GameObject gameObject = quitWithoutSavingButton.GetComponentInChildren<StartMenuButton>().gameObject;
                             GameObject.Destroy(gameObject.GetComponent<StartMenuButton>());
-                            gameObject.AddComponent<ModMenuButton>();
-                            TextMesh textMesh= buttonGameObject.GetComponentInChildren<TextMesh>();
-                            textMesh.text = "Mod Menu";
+                            GPQuitNoSaveButton quitNoSaveButton = gameObject.AddComponent<GPQuitNoSaveButton>();
+                            quitNoSaveButton.startMenu = startMenu;
+                            TextMesh textMesh = quitWithoutSavingButton.GetComponentInChildren<TextMesh>();
+                            textMesh.text = "Quit No Save";
                         }
                     }
                 }
             }
-        }*/
-
-        /*public class GoPointerPatches
-        {
-            [HarmonyPatch(typeof(GoPointer), "ThrowItemAfterDelay")]
-            public static class GoPointerPatch
-            {
-                private static float force_multiplier = 100;
-
-                [HarmonyPrefix]
-                public static bool Prefix(GoPointer __instance, Rigidbody heldRigidbody, ref float force)
-                {
-                    force *= force_multiplier;
-                    __instance.StartCoroutine(ThrowItemAfterDelay(__instance, heldRigidbody, force));
-                    return false;
-                }
-
-                private static IEnumerator ThrowItemAfterDelay(GoPointer instance, Rigidbody heldRigidbody, float force)
-                {
-                    yield return new WaitForFixedUpdate();
-                    heldRigidbody.AddForce(instance.transform.forward * instance.throwForce * force * heldRigidbody.mass);
-                    yield break;
-                }
-            }
-        }*/
+        }
     }
 }

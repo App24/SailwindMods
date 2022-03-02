@@ -16,7 +16,7 @@ namespace TweaksAndFixes.Patches
             [HarmonyPostfix]
             public static void Postfix(PortDude __instance)
             {
-                MissionSortButton.currentPort = __instance.GetPort();
+                GPMissionSortButton.currentPort = __instance.GetPort();
             }
         }
 
@@ -26,7 +26,7 @@ namespace TweaksAndFixes.Patches
             [HarmonyPostfix]
             public static void Postfix(PortDude __instance)
             {
-                MissionSortButton.currentPort = null;
+                GPMissionSortButton.currentPort = null;
             }
         }
     }

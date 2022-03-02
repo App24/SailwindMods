@@ -17,7 +17,7 @@ namespace TweaksAndFixes.Patches
             {
                 if (Main.enabled)
                 {
-                    AccessTools.Method(typeof(ShipItemScroll), "HideArrows").Invoke(__instance, new object[] { });
+                    __instance.InvokePrivateMethod("HideArrows");
                 }
             }
         }

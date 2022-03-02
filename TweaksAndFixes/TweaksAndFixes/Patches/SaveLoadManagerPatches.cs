@@ -63,6 +63,7 @@ namespace TweaksAndFixes.Patches
 			{
 				SaveablePrefabPatches.PrepareSaveDataPatch.indexCounter = 0;
 				Main.saveContainer.HookItems = new List<HookItemSaveable>();
+				Main.saveContainer.InInventoryItems = new List<InInventorySaveable>();
 			}
 		}
 

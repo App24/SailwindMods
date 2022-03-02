@@ -21,6 +21,7 @@ namespace TweaksAndFixes.Patches
             {
                 if (Main.enabled)
                 {
+                    __instance.gameObject.AddComponent<ShipItemInventory>();
                     if (__instance is ShipItemLampHook)
                     {
                         __instance.gameObject.AddComponent<ShipItemLampHookItemHooked>();
@@ -68,50 +69,50 @@ namespace TweaksAndFixes.Patches
             {
                 if (Main.enabled)
                 {
-                    ShipRotate(__instance);
-                    ShipMove(__instance);
+                    Rotate(__instance);
+                    Move(__instance);
                 }
             }
 
-            private static void ShipRotate(ShipItem __instance)
+            private static void Rotate(ShipItem instance)
             {
-                ShipItemRotateOnAltActivate shipRotateOnAltActivate = __instance.GetComponent<ShipItemRotateOnAltActivate>();
+                ShipItemRotateOnAltActivate shipRotateOnAltActivate = instance.GetComponent<ShipItemRotateOnAltActivate>();
                 if (shipRotateOnAltActivate)
                 {
-                    if (!__instance.sold || shipRotateOnAltActivate.rotating)
+                    if (!instance.sold || shipRotateOnAltActivate.rotating)
                     {
                         return;
                     }
                     shipRotateOnAltActivate.rotating = true;
-                    if (__instance.heldRotationOffset != 0)
+                    if (instance.heldRotationOffset != 0)
                     {
-                        __instance.StartCoroutine(Rotate(shipRotateOnAltActivate, 0f));
+                        instance.StartCoroutine(RotateShipItem(shipRotateOnAltActivate, 0f));
                         return;
                     }
-                    __instance.StartCoroutine(Rotate(shipRotateOnAltActivate, shipRotateOnAltActivate.targetAngle));
+                    instance.StartCoroutine(RotateShipItem(shipRotateOnAltActivate, shipRotateOnAltActivate.targetAngle));
                 }
             }
 
-            private static void ShipMove(ShipItem __instance)
+            private static void Move(ShipItem instance)
             {
-                ShipItemMoveOnAltActivate shipMoveOnAltActivate = __instance.GetComponent<ShipItemMoveOnAltActivate>();
+                ShipItemMoveOnAltActivate shipMoveOnAltActivate = instance.GetComponent<ShipItemMoveOnAltActivate>();
                 if (shipMoveOnAltActivate)
                 {
-                    if (!__instance.sold || shipMoveOnAltActivate.moving)
+                    if (!instance.sold || shipMoveOnAltActivate.moving)
                     {
                         return;
                     }
                     shipMoveOnAltActivate.moving = true;
-                    if (__instance.holdDistance != shipMoveOnAltActivate.defaultDistance)
+                    if (instance.holdDistance != shipMoveOnAltActivate.defaultDistance)
                     {
-                        __instance.StartCoroutine(Move(shipMoveOnAltActivate, shipMoveOnAltActivate.defaultDistance));
+                        instance.StartCoroutine(MoveShipItem(shipMoveOnAltActivate, shipMoveOnAltActivate.defaultDistance));
                         return;
                     }
-                    __instance.StartCoroutine(Move(shipMoveOnAltActivate, shipMoveOnAltActivate.targetDistance));
+                    instance.StartCoroutine(MoveShipItem(shipMoveOnAltActivate, shipMoveOnAltActivate.targetDistance));
                 }
             }
 
-            public static IEnumerator Rotate(ShipItemRotateOnAltActivate shipRotateOnAltActivate, float target)
+            public static IEnumerator RotateShipItem(ShipItemRotateOnAltActivate shipRotateOnAltActivate, float target)
             {
                 float start = shipRotateOnAltActivate.shipItem.heldRotationOffset;
                 for (float t = 0f; t < 1f; t += Time.deltaTime * 3.22f)
@@ -125,7 +126,7 @@ namespace TweaksAndFixes.Patches
                 yield break;
             }
 
-            public static IEnumerator Move(ShipItemMoveOnAltActivate shipMoveOnAltActivate, float target)
+            public static IEnumerator MoveShipItem(ShipItemMoveOnAltActivate shipMoveOnAltActivate, float target)
             {
                 float start = shipMoveOnAltActivate.shipItem.holdDistance;
                 for (float t = 0f; t < 1f; t += Time.deltaTime * 3.22f)
@@ -140,12 +141,12 @@ namespace TweaksAndFixes.Patches
             }
         }
 
-        public static void ResetMove(ShipItem __instance)
+        public static void ResetMove(ShipItem instance)
         {
-            ShipItemMoveOnAltActivate shipMoveOnAltActivate = __instance.GetComponent<ShipItemMoveOnAltActivate>();
+            ShipItemMoveOnAltActivate shipMoveOnAltActivate = instance.GetComponent<ShipItemMoveOnAltActivate>();
             if (shipMoveOnAltActivate)
             {
-                __instance.holdDistance = shipMoveOnAltActivate.defaultDistance;
+                instance.holdDistance = shipMoveOnAltActivate.defaultDistance;
             }
         }
     }

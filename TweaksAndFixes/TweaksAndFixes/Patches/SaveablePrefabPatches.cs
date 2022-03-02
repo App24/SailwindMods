@@ -32,6 +32,13 @@ namespace TweaksAndFixes.Patches
                         }
                     }
 				});
+				Main.saveContainer.InInventoryItems.ForEach(i =>
+				{
+					if (saveablePrefabs.TryGetValue(i.prefabIndex, out var prefab))
+					{
+						prefab.GetComponent<ShipItemInventory>().inInventory = i.inInventory;
+					}
+				});
             }
 
 			public static Dictionary<int, SaveablePrefab> saveablePrefabs = new Dictionary<int, SaveablePrefab>();
@@ -49,7 +56,13 @@ namespace TweaksAndFixes.Patches
 				{
 					SaveablePrefab saveablePrefab = component.hookedItem.GetComponent<SaveablePrefab>();
 					if (saveablePrefab && saveablePrefabs.TryGetValue(saveablePrefab, out int index))
+					{
 						Main.saveContainer.HookItems.Add(new HookItemSaveable(indexCounter, index));
+					}
+				}
+				ShipItemInventory shipItemInventory = ___item.GetComponent<ShipItemInventory>();
+				if (shipItemInventory) {
+					Main.saveContainer.InInventoryItems.Add(new InInventorySaveable(indexCounter, shipItemInventory.inInventory));
 				}
 			}
 

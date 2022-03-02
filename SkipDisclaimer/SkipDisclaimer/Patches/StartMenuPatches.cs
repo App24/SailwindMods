@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using SailwindModdingHelper;
 
 namespace SkipDisclaimer.Patches
 {
@@ -16,12 +17,34 @@ namespace SkipDisclaimer.Patches
         private static class SkipDisclaimerNewGamePatch
         {
             [HarmonyPrefix]
-            public static void Prefix(StartMenu __instance, ref bool ___fPressed)
+            public static bool Prefix(StartMenu __instance, ref bool ___fPressed, ref int ___animsPlaying, int ___currentRegion, Transform ___startApos, Transform ___startEpos, Transform ___startMpos)
             {
                 if (Main.enabled)
                 {
                     ___fPressed = true;
+                    ___animsPlaying++;
+                    Transform transform = null;
+                    if (___currentRegion == 0)
+                    {
+                        transform = ___startApos;
+                        GameState.newGameRegion = PortRegion.alankh;
+                    }
+                    else if (___currentRegion == 1)
+                    {
+                        transform = ___startEpos;
+                        GameState.newGameRegion = PortRegion.emerald;
+                    }
+                    else
+                    {
+                        transform = ___startMpos;
+                        GameState.newGameRegion = PortRegion.medi;
+                    }
+
+                    __instance.InvokePrivateMethod("DisableIslandMenu");
+                    __instance.StartCoroutine(MovePlayerToStartPos(__instance, transform));
+                    return false;
                 }
+                return true;
             }
         }
 
@@ -38,7 +61,7 @@ namespace SkipDisclaimer.Patches
             }
         }
 
-        [HarmonyPatch(typeof(StartMenu), "MovePlayerToStartPos")]
+        /*[HarmonyPatch(typeof(StartMenu), "MovePlayerToStartPos")]
         public static class QuickStartPosPatch
         {
             [HarmonyPrefix]
@@ -51,49 +74,49 @@ namespace SkipDisclaimer.Patches
                 }
                 return true;
             }
+        }*/
 
-            public static IEnumerator MovePlayerToStartPos(StartMenu instance, Transform startPos, GameObject logo, Transform playerObserver, GameObject playerController, PurchasableBoat[] startingBoats, int currentRegion, GameObject disclaimer, bool fPressed)
+        public static IEnumerator MovePlayerToStartPos(StartMenu instance, Transform startPos)
+        {
+            instance.GetPrivateField<GameObject>("logo").SetActive(false);
+            instance.GetPrivateField<Transform>("playerObserver").transform.parent = instance.transform.parent;
+            float animTime = Main.settings.AnimationSpeed;
+            Juicebox.juice.TweenPosition(instance.GetPrivateField<Transform>("playerObserver").gameObject, startPos.position, animTime, JuiceboxTween.quadraticInOut);
+            for (float t = 0f; t < animTime; t += Time.deltaTime)
             {
-                logo.SetActive(false);
-                playerObserver.transform.parent = instance.transform.parent;
-                float animTime = Main.settings.AnimationSpeed;
-                Juicebox.juice.TweenPosition(playerObserver.gameObject, startPos.position, animTime, JuiceboxTween.quadraticInOut);
-                for (float t = 0f; t < animTime; t += Time.deltaTime)
-                {
-                    playerObserver.rotation = Quaternion.Lerp(playerObserver.rotation, startPos.rotation, Time.deltaTime * 0.35f);
-                    yield return new WaitForEndOfFrame();
-                }
-                playerObserver.rotation = startPos.rotation;
-                playerController.transform.position = playerObserver.position;
-                playerController.transform.rotation = playerObserver.rotation;
+                instance.GetPrivateField<Transform>("playerObserver").rotation = Quaternion.Lerp(instance.GetPrivateField<Transform>("playerObserver").rotation, startPos.rotation, Time.deltaTime * 0.35f);
                 yield return new WaitForEndOfFrame();
-                playerController.GetComponent<CharacterController>().enabled = true;
-                playerController.GetComponent<OVRPlayerController>().enabled = true;
-                playerObserver.gameObject.GetComponent<PlayerControllerMirror>().enabled = true;
-                MouseLook.ToggleMouseLookAndCursor(true);
-                startingBoats[currentRegion].LoadAsPurchased();
-                instance.StartCoroutine(Blackout.FadeTo(1f, 0.2f));
-                yield return new WaitForSeconds(0.2f);
-                yield return new WaitForEndOfFrame();
-                disclaimer.SetActive(true);
-                Traverse.Create(instance).Field("waitingForFInput").SetValue(true);
-                while (!fPressed)
-                {
-                    yield return new WaitForEndOfFrame();
-                }
-                disclaimer.SetActive(false);
-                instance.StartCoroutine(Blackout.FadeTo(0f, 0.3f));
-                yield return new WaitForEndOfFrame();
-                SaveLoadManager.readyToSave = true;
-                GameState.playing = true;
-                GameState.justStarted = true;
-                MouseLook.ToggleMouseLook(true);
-                int animsPlaying= (int)Traverse.Create(instance).Field("animsPlaying").GetValue();
-                Traverse.Create(instance).Field("animsPlaying").SetValue(animsPlaying-1);
-                yield return new WaitForSeconds(1f);
-                GameState.justStarted = false;
-                yield break;
             }
+            instance.GetPrivateField<Transform>("playerObserver").rotation = startPos.rotation;
+            instance.GetPrivateField<GameObject>("playerController").transform.position = instance.GetPrivateField<Transform>("playerObserver").position;
+            instance.GetPrivateField<GameObject>("playerController").transform.rotation = instance.GetPrivateField<Transform>("playerObserver").rotation;
+            yield return new WaitForEndOfFrame();
+            instance.GetPrivateField<GameObject>("playerController").GetComponent<CharacterController>().enabled = true;
+            instance.GetPrivateField<GameObject>("playerController").GetComponent<OVRPlayerController>().enabled = true;
+            instance.GetPrivateField<Transform>("playerObserver").gameObject.GetComponent<PlayerControllerMirror>().enabled = true;
+            MouseLook.ToggleMouseLookAndCursor(true);
+            instance.GetPrivateField<PurchasableBoat[]>("startingBoats")[instance.GetPrivateField<int>("currentRegion")].LoadAsPurchased();
+            instance.StartCoroutine(Blackout.FadeTo(1f, 0.2f));
+            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForEndOfFrame();
+            instance.GetPrivateField<GameObject>("disclaimer").SetActive(true);
+            instance.SetPrivateField("waitingForFInput", true);
+            while (!instance.GetPrivateField<bool>("fPressed"))
+            {
+                yield return new WaitForEndOfFrame();
+            }
+            instance.GetPrivateField<GameObject>("disclaimer").SetActive(false);
+            instance.StartCoroutine(Blackout.FadeTo(0f, 0.3f));
+            yield return new WaitForEndOfFrame();
+            SaveLoadManager.readyToSave = true;
+            GameState.playing = true;
+            GameState.justStarted = true;
+            MouseLook.ToggleMouseLook(true);
+            int animsPlaying = (int)Traverse.Create(instance).Field("animsPlaying").GetValue();
+            Traverse.Create(instance).Field("animsPlaying").SetValue(animsPlaying - 1);
+            yield return new WaitForSeconds(1f);
+            GameState.justStarted = false;
+            yield break;
         }
     }
 }

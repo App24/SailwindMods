@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace TweaksAndFixes.Scripts
 {
-    internal enum MissionSorting
+    internal class ShipItemInventory : MonoBehaviour
     {
-        PricePerMile,
-        TotalPrice,
-        GoodCount,
-        Distance,
-        Last
+        public bool inInventory;
     }
 }

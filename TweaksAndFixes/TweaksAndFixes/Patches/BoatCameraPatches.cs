@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using SailwindModdingHelper;
 
 namespace TweaksAndFixes.Patches
 {
@@ -18,7 +19,7 @@ namespace TweaksAndFixes.Patches
             {
                 if (Main.enabled)
                 {
-					if (Main.paused) return false;
+					if (Utils.GamePaused) return false;
 					if (GameInput.GetKeyDown(InputName.CameraMode))
 					{
 						if (GameState.currentBoat == null)

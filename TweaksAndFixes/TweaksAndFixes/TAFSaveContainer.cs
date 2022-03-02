@@ -10,6 +10,7 @@ namespace TweaksAndFixes
     public class TAFSaveContainer : ModSaveContainer
     {
         public List<HookItemSaveable> HookItems { get; set; } = new List<HookItemSaveable>();
+        public List<InInventorySaveable> InInventoryItems { get; set; } = new List<InInventorySaveable>();
 
         public override void Save()
         {
@@ -29,6 +30,23 @@ namespace TweaksAndFixes
         }
 
         public HookItemSaveable()
+        {
+
+        }
+    }
+
+    public class InInventorySaveable
+    {
+        public int prefabIndex;
+        public bool inInventory;
+
+        public InInventorySaveable(int prefabIndex, bool inInventory)
+        {
+            this.prefabIndex = prefabIndex;
+            this.inInventory = inInventory;
+        }
+
+        public InInventorySaveable()
         {
 
         }

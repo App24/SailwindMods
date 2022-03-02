@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 using UnityModManagerNet;
 
 namespace TweaksAndFixes
@@ -29,7 +30,6 @@ namespace TweaksAndFixes
         }
 
         public static bool enabled;
-        public static bool paused;
         public static UnityModManager.ModEntry mod;
         public static TAFSaveContainer saveContainer = new TAFSaveContainer();
     }

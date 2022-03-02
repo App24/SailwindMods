@@ -45,8 +45,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Sailwind\Sailwind_Data\Managed\Oculus.VR.dll</HintPath>
     </Reference>
-    <Reference Include="SailwindModdingHelper">
-      <HintPath>..\..\SailwindModdingHelper\SailwindModdingHelper\bin\Release\SailwindModdingHelper.dll</HintPath>
+    <Reference Include="SailwindModdingHelper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\SailwindModdingHelper\SailwindModdingHelper\bin\Release\SailwindModdingHelper.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -62,6 +63,10 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Sailwind\Sailwind_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Sailwind\Sailwind_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Sailwind\Sailwind_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
@@ -79,16 +84,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Patches\BoatCameraPatches.cs" />
-    <Compile Include="Patches\BottleDrinkingPatches.cs" />
+    <Compile Include="Patches\FixDrinkingBottlePatches.cs" />
     <Compile Include="Patches\MissionDetailsUIPatches.cs" />
-    <Compile Include="Patches\MissionListUIPatches.cs" />
+    <Compile Include="Patches\MouseButtonPointerPatches.cs" />
     <Compile Include="Patches\MouthColPatches.cs" />
     <Compile Include="Patches\PlayerClimbPatches.cs" />
     <Compile Include="Patches\PlayerCrouchingPatches.cs" />
     <Compile Include="Patches\PortDudePatches.cs" />
     <Compile Include="Patches\PortPatches.cs" />
+    <Compile Include="Patches\PreventMugSpillagePatches.cs" />
+    <Compile Include="Patches\ShipItemEnterInventoryPatches.cs" />
     <Compile Include="Patches\ShipItemPatches.cs" />
     <Compile Include="Patches\StartMenuPatches.cs" />
     <Compile Include="Patches\SaveablePrefabPatches.cs" />
@@ -98,9 +106,11 @@
     <Compile Include="Patches\SunPatches.cs" />
     <Compile Include="Patches\WindClothPatches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scripts\MissionSortButton.cs" />
+    <Compile Include="Scripts\GPMissionSortButton.cs" />
     <Compile Include="Scripts\MissionSorting.cs" />
     <Compile Include="Scripts\MissionStoring.cs" />
+    <Compile Include="Scripts\GPQuitNoSaveButton.cs" />
+    <Compile Include="Scripts\ShipItemInventory.cs" />
     <Compile Include="Scripts\ShipItemLampHookItemHooked.cs" />
     <Compile Include="Scripts\ShipItemMoveOnAltActivate.cs" />
     <Compile Include="Scripts\ShipItemRotateOnAltActivate.cs" />

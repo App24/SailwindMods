@@ -1,23 +1,23 @@
 ﻿using HarmonyLib;
-using SailwindModdingHelper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TweaksAndFixes.Scripts;
 
 namespace TweaksAndFixes.Patches
 {
-    internal static class PlayerClimbPatches
+    internal static class PreventMugSpillagePatches
     {
-        [HarmonyPatch(typeof(PlayerClimb), "Update")]
-        public static class UpdatePatch
+        [HarmonyPatch(typeof(Mug), "Spill")]
+        public static class SpillPatch
         {
             [HarmonyPrefix]
-            public static bool Prefix()
+            public static bool Prefix(ShipItemBottle ___bottle)
             {
                 if (!Main.enabled) return true;
-                return !Utils.GamePaused;
+                return !___bottle.GetComponent<ShipItemInventory>().inInventory;
             }
         }
     }

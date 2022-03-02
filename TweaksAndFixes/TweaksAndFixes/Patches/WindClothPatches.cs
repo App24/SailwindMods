@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using SailwindModdingHelper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace TweaksAndFixes.Patches
             {
                 if (Main.enabled)
                 {
-                    if (Main.paused) return false;
+                    if (Utils.GamePaused) return false;
                     if (GameInput.GetKeyDown(InputName.CameraMode))
                     {
                         return false;
