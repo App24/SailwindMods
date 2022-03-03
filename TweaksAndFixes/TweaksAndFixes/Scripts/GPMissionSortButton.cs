@@ -46,7 +46,7 @@ namespace TweaksAndFixes.Scripts
                 MissionDetailsUI.instance.GetPrivateField<GameObject>("UI").SetActive(false);
                 MissionDetailsUI.instance.SetPrivateField("currentMission", null);
                 MissionDetailsUI.instance.InvokePrivateMethod("ZoomMap", false);
-                MissionDetailsUI.instance.InvokePrivateMethod("UpdatePageCountText");
+                MissionListUI.instance.InvokePrivateMethod("UpdatePageCountText");
             }
         }
 
