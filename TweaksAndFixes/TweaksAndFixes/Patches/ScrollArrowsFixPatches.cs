@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TweaksAndFixes.Patches
 {
-    public static class ShipItemScrollPatches
+    public static class ScrollArrowsFixPatches
     {
         [HarmonyPatch(typeof(ShipItemScroll), "OnLoad")]
         public static class OnLoadPatch

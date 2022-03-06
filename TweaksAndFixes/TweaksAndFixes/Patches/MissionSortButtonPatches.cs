@@ -11,7 +11,7 @@ using Log = UnityModManagerNet.UnityModManager.Logger;
 
 namespace TweaksAndFixes.Patches
 {
-    internal static class MissionDetailsUIPatches
+    internal static class MissionSortButtonPatches
 	{
 		static TextMesh cargo;
 
@@ -24,7 +24,7 @@ namespace TweaksAndFixes.Patches
 		};
 
 		[HarmonyPatch(typeof(MissionDetailsUI), "Start")]
-		public static class StartPatch
+		public static class MissionDetailsUIStartPatch
 		{
 			static bool done;
 
@@ -136,7 +136,129 @@ namespace TweaksAndFixes.Patches
 					cargo.text = cargoName;
 				}
 			}
-        }
+		}
 
+		[HarmonyPatch(typeof(PortDude), "ActivateMissionListUI")]
+		public static class ActivateMissionListUIPatch
+		{
+			[HarmonyPostfix]
+			public static void Postfix(PortDude __instance)
+			{
+				GPMissionSortButton.currentPort = __instance.GetPort();
+			}
+		}
+
+		[HarmonyPatch(typeof(PortDude), "DeactivateMissionListUI")]
+		public static class DeactivateMissionListUIPatch
+		{
+			[HarmonyPostfix]
+			public static void Postfix(PortDude __instance)
+			{
+				GPMissionSortButton.currentPort = null;
+			}
+		}
+
+		public static MissionSorting missionSorting = MissionSorting.PricePerMile;
+
+		[HarmonyPatch(typeof(Port), "Start")]
+		public static class PortStartPatch
+		{
+			[HarmonyPostfix]
+			public static void Postfix(Port __instance)
+			{
+				__instance.gameObject.AddComponent<MissionStoring>();
+			}
+		}
+
+		[HarmonyPatch(typeof(Port), "GenerateMissions")]
+		public static class GenerateMissionsPatch
+		{
+			[HarmonyPrefix]
+			public static bool Prefix(Port __instance, int page, ref Mission[] ___missions, ref int ___currentMissionCount, ref Port[] ___destinationPorts, GameObject[] ___producedGoodPrefabs)
+			{
+				if (!Main.enabled) return true;
+				___missions = new Mission[5];
+				___currentMissionCount = 0;
+				int num = page * ___missions.Length;
+				List<Mission> list = new List<Mission>();
+				foreach (Port port in ___destinationPorts)
+				{
+					foreach (GameObject gameObject in ___producedGoodPrefabs)
+					{
+						int prefabIndex = gameObject.GetComponent<SaveablePrefab>().prefabIndex;
+						if (port.island.GetDemand(prefabIndex) > 0)
+						{
+							Good component = gameObject.GetComponent<Good>();
+							bool flag = component.nativeRegion != port.region || (port.hubPort && !__instance.hubPort);
+							if (component.requiredRepLevel > PlayerReputation.GetRepLevel(port.region))
+							{
+								flag = false;
+							}
+							if (Mission.GetDistance(__instance, port) > PlayerReputation.GetMaxDistance(__instance.region))
+							{
+								flag = false;
+							}
+							if (flag)
+							{
+								int demand = port.island.GetDemand(prefabIndex);
+
+								int totalPrice = __instance.InvokePrivateMethod<int>("GetTotalPrice", prefabIndex, port, demand);
+								int dueDay = __instance.InvokePrivateMethod<int>("GetDueDay", port, component);
+								Mission item = new Mission(__instance, port, gameObject, demand, totalPrice, 1f, 0, dueDay);
+								list.Add(item);
+							}
+						}
+					}
+				}
+				___currentMissionCount = list.Count;
+				MissionStoring missionStoringcomponent = __instance.gameObject.GetComponent<MissionStoring>();
+				missionStoringcomponent.page = num;
+				missionStoringcomponent.missions = list;
+				list.Sort(SortMissions);
+				SortMissions(__instance);
+				return false;
+			}
+
+			public static void SortMissions(Port instance)
+			{
+				MissionStoring missionStoringcomponent = instance.gameObject.GetComponent<MissionStoring>();
+				Mission[] missions = instance.GetPrivateField<Mission[]>("missions");
+				for (int k = 0; k < missions.Length; k++)
+				{
+					if (k + missionStoringcomponent.page < missionStoringcomponent.missions.Count)
+					{
+						missions[k] = missionStoringcomponent.missions[k + missionStoringcomponent.page];
+					}
+				}
+				instance.SetPrivateField("missions", missions);
+			}
+
+			private static int SortMissions(Mission s2, Mission s1)
+			{
+				switch (missionSorting)
+				{
+					case MissionSorting.PricePerMile:
+						{
+							return s1.pricePerKm.CompareTo(s2.pricePerKm);
+						}
+					case MissionSorting.TotalPrice:
+						{
+							return s1.totalPrice.CompareTo(s2.totalPrice);
+						}
+					case MissionSorting.GoodCount:
+						{
+							return s1.goodCount.CompareTo(s2.goodCount);
+						}
+					case MissionSorting.Distance:
+						{
+							return s1.distance.CompareTo(s2.distance);
+						}
+					default:
+						{
+							return s1.pricePerKm.CompareTo(s2.pricePerKm);
+						}
+				}
+			}
+		}
 	}
 }

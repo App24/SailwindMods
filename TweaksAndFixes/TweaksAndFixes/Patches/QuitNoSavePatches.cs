@@ -10,11 +10,11 @@ using UnityEngine;
 
 namespace TweaksAndFixes.Patches
 {
-    internal static class SunPatches
+    internal static class QuitNoSavePatches
     {
-        public static GameObject quitWithoutSavingButton;
-        public static GameObject quitButton;
-        public static Vector3 originalQuitPos;
+        static GameObject quitWithoutSavingButton;
+        static GameObject quitButton;
+        static Vector3 originalQuitPos;
 
         [HarmonyPatch(typeof(Sun), "Start")]
         public static class StartPatch
@@ -48,6 +48,19 @@ namespace TweaksAndFixes.Patches
                         }
                     }
                 }
+            }
+        }
+
+        [HarmonyPatch(typeof(StartMenu), "EnableQuitConfirmMenu")]
+        public static class EnableQuitConfirmMenuPatch
+        {
+            [HarmonyPostfix]
+            public static void Postfix()
+            {
+                quitWithoutSavingButton.SetActive(GameState.playing);
+                quitButton.SetActive(false);
+                quitButton.transform.localPosition = GameState.playing ? new Vector3(0.486f, -0.311f, 0.036f) : originalQuitPos;
+                quitButton.SetActive(true);
             }
         }
     }

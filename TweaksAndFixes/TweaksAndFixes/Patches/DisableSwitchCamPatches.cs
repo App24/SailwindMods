@@ -9,7 +9,7 @@ using SailwindModdingHelper;
 
 namespace TweaksAndFixes.Patches
 {
-    internal static class BoatCameraPatches
+    internal static class DisableSwitchCamPatches
     {
         [HarmonyPatch(typeof(BoatCamera), "Update")]
         public static class UpdatePatch

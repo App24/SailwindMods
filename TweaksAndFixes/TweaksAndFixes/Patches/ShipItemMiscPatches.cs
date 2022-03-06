@@ -11,7 +11,7 @@ using Log = UnityModManagerNet.UnityModManager.Logger;
 
 namespace TweaksAndFixes.Patches
 {
-    internal static class ShipItemPatches
+    internal static class ShipItemMiscPatches
     {
         [HarmonyPatch(typeof(ShipItem), "Awake")]
         public static class AwakePatch
