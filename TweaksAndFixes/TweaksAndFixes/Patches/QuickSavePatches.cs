@@ -12,7 +12,7 @@ namespace TweaksAndFixes.Patches
     internal static class QuickSavePatches
     {
         [HarmonyPatch(typeof(PlayerCrouching), "Update")]
-        public static class UpdatePatch
+        private static class UpdatePatch
         {
             [HarmonyPostfix]
             public static void Postfix()

@@ -5,19 +5,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TweaksAndFixes.Scripts;
+using TweaksAndFixes.MonoBehaviourScripts;
 using UnityEngine;
 
 namespace TweaksAndFixes.Patches
 {
     internal static class QuitNoSavePatches
     {
-        static GameObject quitWithoutSavingButton;
-        static GameObject quitButton;
-        static Vector3 originalQuitPos;
+        private static GameObject quitWithoutSavingButton;
+        private static GameObject quitButton;
+        private static Vector3 originalQuitPos;
 
         [HarmonyPatch(typeof(Sun), "Start")]
-        public static class StartPatch
+        private static class StartPatch
         {
             [HarmonyPostfix]
             public static void Postfix()
@@ -52,7 +52,7 @@ namespace TweaksAndFixes.Patches
         }
 
         [HarmonyPatch(typeof(StartMenu), "EnableQuitConfirmMenu")]
-        public static class EnableQuitConfirmMenuPatch
+        private static class EnableQuitConfirmMenuPatch
         {
             [HarmonyPostfix]
             public static void Postfix()

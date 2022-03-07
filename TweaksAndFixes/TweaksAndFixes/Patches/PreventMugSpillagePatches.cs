@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TweaksAndFixes.Scripts;
+using TweaksAndFixes.MonoBehaviourScripts;
 
 namespace TweaksAndFixes.Patches
 {
     internal static class PreventMugSpillagePatches
     {
         [HarmonyPatch(typeof(Mug), "Spill")]
-        public static class SpillPatch
+        private static class SpillPatch
         {
             [HarmonyPrefix]
             public static bool Prefix(ShipItemBottle ___bottle)

@@ -84,7 +84,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Patches\DisableSwitchCamPatches.cs" />
     <Compile Include="Patches\FixDrinkingBottlePatches.cs" />
@@ -101,17 +100,21 @@
     <Compile Include="Patches\ShipItemLampHookPatches.cs" />
     <Compile Include="Patches\ScrollArrowsFixPatches.cs" />
     <Compile Include="Patches\QuitNoSavePatches.cs" />
+    <Compile Include="Patches\StoreFoodPatches.cs" />
+    <Compile Include="Patches\UseMissionGoodsPatches.cs" />
     <Compile Include="Patches\WindClothPatches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scripts\GPMissionSortButton.cs" />
-    <Compile Include="Scripts\MissionSorting.cs" />
-    <Compile Include="Scripts\MissionStoring.cs" />
-    <Compile Include="Scripts\GPQuitNoSaveButton.cs" />
-    <Compile Include="Scripts\ShipItemInventory.cs" />
-    <Compile Include="Scripts\ShipItemLampHookItemHooked.cs" />
-    <Compile Include="Scripts\ShipItemMoveOnAltActivate.cs" />
-    <Compile Include="Scripts\ShipItemRotateOnAltActivate.cs" />
+    <Compile Include="MonoBehaviourScripts\GPMissionSortButton.cs" />
+    <Compile Include="MonoBehaviourScripts\MissionStoring.cs" />
+    <Compile Include="MonoBehaviourScripts\GPQuitNoSaveButton.cs" />
+    <Compile Include="MonoBehaviourScripts\ShipItemInventory.cs" />
+    <Compile Include="MonoBehaviourScripts\ShipItemLampHookItemHooked.cs" />
+    <Compile Include="MonoBehaviourScripts\ShipItemMoveOnAltActivate.cs" />
+    <Compile Include="MonoBehaviourScripts\ShipItemRotateOnAltActivate.cs" />
     <Compile Include="TAFSaveContainer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Scripts\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

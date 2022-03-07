@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace TweaksAndFixes.Scripts
+namespace TweaksAndFixes.MonoBehaviourScripts
 {
     internal class ShipItemMoveOnAltActivate : MonoBehaviour
     {
@@ -17,7 +17,7 @@ namespace TweaksAndFixes.Scripts
 
         public float defaultDistance;
 
-        void Awake()
+        private void Awake()
         {
             shipItem = GetComponent<ShipItem>();
             defaultDistance = shipItem.holdDistance;

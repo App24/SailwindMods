@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TweaksAndFixes.Scripts;
+using TweaksAndFixes.MonoBehaviourScripts;
 using UnityEngine;
 using Log = UnityModManagerNet.UnityModManager.Logger;
 
@@ -14,7 +14,7 @@ namespace TweaksAndFixes.Patches
     internal static class ShipItemMiscPatches
     {
         [HarmonyPatch(typeof(ShipItem), "Awake")]
-        public static class AwakePatch
+        private static class AwakePatch
         {
             [HarmonyPrefix]
             public static void Prefix(ShipItem __instance)
@@ -29,14 +29,14 @@ namespace TweaksAndFixes.Patches
                     else if (__instance.name.ToLower().Contains("map"))
                     {
                         __instance.gameObject.AddComponent<ShipItemMoveOnAltActivate>();
-                        __instance.gameObject.AddComponent<ShipItemRotateOnAltActivate>().targetAngle=90f;
+                        __instance.gameObject.AddComponent<ShipItemRotateOnAltActivate>().targetAngle = 90f;
                     }
                 }
             }
         }
 
         [HarmonyPatch(typeof(ShipItem), "OnDrop")]
-        public static class OnDropPatch
+        private static class OnDropPatch
         {
             [HarmonyPrefix]
             public static void Prefix(ShipItem __instance)
@@ -49,7 +49,7 @@ namespace TweaksAndFixes.Patches
         }
 
         [HarmonyPatch(typeof(ShipItem), "OnEnterInventory")]
-        public static class OnEnterInventoryPatch
+        private static class OnEnterInventoryPatch
         {
             [HarmonyPrefix]
             public static void Prefix(ShipItem __instance)
@@ -62,7 +62,7 @@ namespace TweaksAndFixes.Patches
         }
 
         [HarmonyPatch(typeof(ShipItem), "OnAltActivate")]
-        public static class OnAltActivatePatch
+        private static class OnAltActivatePatch
         {
             [HarmonyPrefix]
             public static void Prefix(ShipItem __instance)

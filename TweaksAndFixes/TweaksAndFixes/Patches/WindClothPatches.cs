@@ -12,7 +12,7 @@ namespace TweaksAndFixes.Patches
     internal static class WindClothPatches
     {
         [HarmonyPatch(typeof(WindCloth), "Update")]
-        public static class UpdatePatch
+        private static class UpdatePatch
         {
             [HarmonyPrefix]
             public static bool Prefix(Cloth ___cloth)

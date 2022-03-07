@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using SailwindModdingHelper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace TweaksAndFixes.Patches
 {
-    public static class ScrollArrowsFixPatches
+    internal static class ScrollArrowsFixPatches
     {
         [HarmonyPatch(typeof(ShipItemScroll), "OnLoad")]
-        public static class OnLoadPatch
+        private static class OnLoadPatch
         {
             [HarmonyPrefix]
             public static void Prefix(ShipItemScroll __instance)

@@ -4,15 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TweaksAndFixes.Scripts;
+using TweaksAndFixes.MonoBehaviourScripts;
 using UnityEngine;
 
 namespace TweaksAndFixes.Patches
 {
-    public static class ShipItemLampHookPatches
+    internal static class ShipItemLampHookPatches
     {
         [HarmonyPatch(typeof(ShipItemLampHook), "OnEnterInventory")]
-        public static class OnEnterInventoryPatch
+        private static class OnEnterInventoryPatch
         {
             [HarmonyPrefix]
             public static bool Prefix(ShipItemLampHook __instance, ref bool ___occupied)
@@ -31,7 +31,7 @@ namespace TweaksAndFixes.Patches
         }
 
         [HarmonyPatch(typeof(ShipItemLampHook), "OnItemClick")]
-        public static class OnItemClickPatch
+        private static class OnItemClickPatch
         {
             [HarmonyPrefix]
             public static bool Prefix(ShipItemLampHook __instance, PickupableItem heldItem, ref bool ___occupied, ref bool __result)

@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace TweaksAndFixes.Patches
 {
-    public static class FixDrinkingBottlePatches
+    internal static class FixDrinkingBottlePatches
     {
         [HarmonyPatch(typeof(BottleDrinking), "OnTriggerEnter")]
         public static class OnTriggerEnterPatch

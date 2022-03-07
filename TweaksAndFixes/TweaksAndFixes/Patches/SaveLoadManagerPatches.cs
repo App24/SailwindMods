@@ -11,83 +11,83 @@ using UnityEngine;
 
 namespace TweaksAndFixes.Patches
 {
-    public static class SaveLoadManagerPatches
+    internal static class SaveLoadManagerPatches
     {
-		[HarmonyPatch(typeof(SaveLoadManager), "SaveModData")]
-		public static class SaveModDataPatch
-		{
-			[HarmonyPrefix]
-			public static void Postfix()
-			{
-				if (Main.enabled)
-				{
-					Main.saveContainer.Save();
-				}
-				AddPrefabPatch.indexCounter = 0;
-				SaveablePrefabPatches.PrepareSaveDataPatch.saveablePrefabs = new Dictionary<SaveablePrefab, int>();
-			}
-		}
-
-		[HarmonyPatch(typeof(SaveLoadManager), "LoadGame")]
-		public static class LoadGamePatch
-		{
-			[HarmonyPrefix]
-			public static void Prefix()
-			{
-				SaveablePrefabPatches.LoadPatch.indexCounter = 0;
-				SaveablePrefabPatches.LoadPatch.saveablePrefabs = new Dictionary<int, SaveablePrefab>();
-				SaveContainer saveContainer = new SaveContainer();
-				BinaryFormatter binaryFormatter = new BinaryFormatter();
-				FileStream fileStream = File.Open(SaveSlots.GetCurrentSavePath(), FileMode.Open);
-				saveContainer = (SaveContainer)binaryFormatter.Deserialize(fileStream);
-				fileStream.Close();
-				if (saveContainer.modData != null)
-				{
-					GameState.modData = saveContainer.modData;
-				}
-				Main.saveContainer = ModSaveContainer.Load<TAFSaveContainer>(Main.mod);
-			}
-
-			[HarmonyPostfix]
-			public static void Postfix()
+        [HarmonyPatch(typeof(SaveLoadManager), "SaveModData")]
+        private static class SaveModDataPatch
+        {
+            [HarmonyPrefix]
+            public static void Postfix()
             {
-				SaveablePrefabPatches.LoadPatch.AssignHookItems();
+                if (Main.enabled)
+                {
+                    Main.saveContainer.Save();
+                }
+                AddPrefabPatch.indexCounter = 0;
+                SaveablePrefabPatches.PrepareSaveDataPatch.saveablePrefabs = new Dictionary<SaveablePrefab, int>();
             }
-		}
+        }
 
-		[HarmonyPatch(typeof(SaveLoadManager), "DoSaveGame")]
-		public static class DoSaveGamePatch
-		{
-			[HarmonyPrefix]
-			public static void Prefix()
-			{
-				SaveablePrefabPatches.PrepareSaveDataPatch.indexCounter = 0;
-				Main.saveContainer.HookItems = new List<HookItemSaveable>();
-				Main.saveContainer.InInventoryItems = new List<InInventorySaveable>();
-			}
-		}
+        [HarmonyPatch(typeof(SaveLoadManager), "LoadGame")]
+        private static class LoadGamePatch
+        {
+            [HarmonyPrefix]
+            public static void Prefix()
+            {
+                SaveablePrefabPatches.LoadPatch.indexCounter = 0;
+                SaveablePrefabPatches.LoadPatch.saveablePrefabs = new Dictionary<int, SaveablePrefab>();
+                SaveContainer saveContainer = new SaveContainer();
+                BinaryFormatter binaryFormatter = new BinaryFormatter();
+                FileStream fileStream = File.Open(SaveSlots.GetCurrentSavePath(), FileMode.Open);
+                saveContainer = (SaveContainer)binaryFormatter.Deserialize(fileStream);
+                fileStream.Close();
+                if (saveContainer.modData != null)
+                {
+                    GameState.modData = saveContainer.modData;
+                }
+                Main.saveContainer = ModSaveContainer.Load<TAFSaveContainer>(Main.mod);
+            }
 
-		[HarmonyPatch(typeof(SaveLoadManager), "AddPrefab")]
-		public static class AddPrefabPatch
-		{
-			[HarmonyPrefix]
-			public static void Prefix(SaveablePrefab pref)
-			{
-				indexCounter++;
-				SaveablePrefabPatches.PrepareSaveDataPatch.saveablePrefabs.Add(pref, indexCounter);
-			}
+            [HarmonyPostfix]
+            public static void Postfix()
+            {
+                SaveablePrefabPatches.LoadPatch.AssignHookItems();
+            }
+        }
 
-			public static int indexCounter;
-		}
+        [HarmonyPatch(typeof(SaveLoadManager), "DoSaveGame")]
+        private static class DoSaveGamePatch
+        {
+            [HarmonyPrefix]
+            public static void Prefix()
+            {
+                SaveablePrefabPatches.PrepareSaveDataPatch.indexCounter = 0;
+                Main.saveContainer.HookItems = new List<HookItemSaveable>();
+                Main.saveContainer.InInventoryItems = new List<InInventorySaveable>();
+            }
+        }
 
-		[HarmonyPatch(typeof(SaveLoadManager), "RemovePrefab")]
-		public static class RemovePrefabPatch
-		{
-			[HarmonyPrefix]
-			public static void Prefix(SaveablePrefab pref)
-			{
-				SaveablePrefabPatches.PrepareSaveDataPatch.saveablePrefabs.Remove(pref);
-			}
-		}
-	}
+        [HarmonyPatch(typeof(SaveLoadManager), "AddPrefab")]
+        private static class AddPrefabPatch
+        {
+            [HarmonyPrefix]
+            public static void Prefix(SaveablePrefab pref)
+            {
+                indexCounter++;
+                SaveablePrefabPatches.PrepareSaveDataPatch.saveablePrefabs.Add(pref, indexCounter);
+            }
+
+            public static int indexCounter;
+        }
+
+        [HarmonyPatch(typeof(SaveLoadManager), "RemovePrefab")]
+        private static class RemovePrefabPatch
+        {
+            [HarmonyPrefix]
+            public static void Prefix(SaveablePrefab pref)
+            {
+                SaveablePrefabPatches.PrepareSaveDataPatch.saveablePrefabs.Remove(pref);
+            }
+        }
+    }
 }

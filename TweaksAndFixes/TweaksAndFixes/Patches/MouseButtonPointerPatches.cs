@@ -11,7 +11,7 @@ namespace TweaksAndFixes.Patches
     internal static class MouseButtonPointerPatches
     {
         [HarmonyPatch(typeof(MouseButtonPointer), "LateUpdate")]
-        public static class LateUpdatePatches
+        private static class LateUpdatePatches
         {
             [HarmonyPostfix]
             public static void Postfix(MouseButtonPointer __instance, GoPointerButton ___pointedAtButton, RaycastHit ___hit)

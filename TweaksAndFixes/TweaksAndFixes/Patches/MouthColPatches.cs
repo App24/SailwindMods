@@ -8,10 +8,10 @@ using UnityEngine;
 
 namespace TweaksAndFixes.Patches
 {
-    public static class MouthColPatches
+    internal static class MouthColPatches
     {
         [HarmonyPatch(typeof(MouthCol), "OnTriggerEnter")]
-        public static class OnTriggerEnterPatch
+        private static class OnTriggerEnterPatch
         {
             [HarmonyPrefix]
             public static bool Prefix(Collider other, ref ShipItemFood ___currentFood)

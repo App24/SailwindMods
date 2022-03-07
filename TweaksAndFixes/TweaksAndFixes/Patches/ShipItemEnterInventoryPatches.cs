@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TweaksAndFixes.Scripts;
+using TweaksAndFixes.MonoBehaviourScripts;
 
 namespace TweaksAndFixes.Patches
 {
     internal static class ShipItemEnterInventoryPatches
     {
         [HarmonyPatch(typeof(ShipItem), "OnEnterInventory")]
-        public static class EnterInventory
+        private static class EnterInventory
         {
             [HarmonyPrefix]
             public static void Prefix(ShipItem __instance)
@@ -24,7 +24,7 @@ namespace TweaksAndFixes.Patches
         }
 
         [HarmonyPatch(typeof(ShipItem), "OnLeaveInventory")]
-        public static class ExitInventory
+        private static class ExitInventory
         {
             [HarmonyPrefix]
             public static void Prefix(ShipItem __instance)

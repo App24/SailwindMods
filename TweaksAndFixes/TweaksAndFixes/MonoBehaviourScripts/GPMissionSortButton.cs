@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using SailwindModdingHelper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,20 +8,39 @@ using System.Threading.Tasks;
 using TweaksAndFixes.Patches;
 using UnityEngine;
 
-namespace TweaksAndFixes.Scripts
+namespace TweaksAndFixes.MonoBehaviourScripts
 {
+    internal enum MissionSorting
+    {
+        PricePerMile,
+        TotalPrice,
+        GoodCount,
+        Distance,
+        Last
+    }
+
     internal class GPMissionSortButton : GoPointerButton
     {
         public TextMesh text;
 
         public static Port currentPort;
 
+        public static MissionSorting missionSorting = MissionSorting.PricePerMile;
+
+        static string[] sortingStrings = new[]
+        {
+            "Price Per Mile",
+            "Reward",
+            "Crate Amount",
+            "Distance"
+        };
+
         public override void OnActivate()
         {
-            PortPatches.missionSorting++;
-            if (PortPatches.missionSorting >= MissionSorting.Last)
+            missionSorting++;
+            if (missionSorting >= MissionSorting.Last)
             {
-                PortPatches.missionSorting = 0;
+                missionSorting = 0;
             }
             UpdateMissions();
             UpdateText();
@@ -28,10 +48,10 @@ namespace TweaksAndFixes.Scripts
 
         public override void OnAltActivate()
         {
-            PortPatches.missionSorting--;
-            if (PortPatches.missionSorting < 0)
+            missionSorting--;
+            if (missionSorting < 0)
             {
-                PortPatches.missionSorting = MissionSorting.Last-1;
+                missionSorting = MissionSorting.Last - 1;
             }
             UpdateMissions();
             UpdateText();
@@ -41,7 +61,7 @@ namespace TweaksAndFixes.Scripts
         {
             if (currentPort != null)
             {
-                PortPatches.GenerateMissionsPatch.SortMissions(currentPort);
+                MissionSortButtonPatches.SortMissions(currentPort);
                 MissionListUI.instance.ChangePage(-(int)Traverse.Create(MissionListUI.instance).Field("currentPage").GetValue());
                 MissionDetailsUI.instance.GetPrivateField<GameObject>("UI").SetActive(false);
                 MissionDetailsUI.instance.SetPrivateField("currentMission", null);
@@ -52,7 +72,12 @@ namespace TweaksAndFixes.Scripts
 
         public void UpdateText()
         {
-            text.text = $"Sorting by: {PortPatches.missionSorting}";
+            string missionSortingText = missionSorting.ToString();
+            if((int)missionSorting < sortingStrings.Length)
+            {
+                missionSortingText = sortingStrings[(int)missionSorting];
+            }
+            text.text = $"Sorting by: {missionSortingText}";
         }
     }
 }

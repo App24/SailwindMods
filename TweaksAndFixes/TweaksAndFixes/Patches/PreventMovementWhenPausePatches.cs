@@ -11,7 +11,7 @@ namespace TweaksAndFixes.Patches
     internal static class PreventMovementWhenPausePatches
     {
         [HarmonyPatch(typeof(PlayerClimb), "Update")]
-        public static class PlayerClimbUpdatePatch
+        private static class PlayerClimbUpdatePatch
         {
             [HarmonyPrefix]
             public static bool Prefix()
@@ -22,7 +22,7 @@ namespace TweaksAndFixes.Patches
         }
 
         [HarmonyPatch(typeof(PlayerCrouching), "Update")]
-        public static class PlayerCrouchingUpdatePatch
+        private static class PlayerCrouchingUpdatePatch
         {
             [HarmonyPrefix]
             public static bool Prefix()

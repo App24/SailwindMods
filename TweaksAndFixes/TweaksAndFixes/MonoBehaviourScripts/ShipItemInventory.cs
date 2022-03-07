@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace TweaksAndFixes.Scripts
+namespace TweaksAndFixes.MonoBehaviourScripts
 {
     internal class ShipItemInventory : MonoBehaviour
     {

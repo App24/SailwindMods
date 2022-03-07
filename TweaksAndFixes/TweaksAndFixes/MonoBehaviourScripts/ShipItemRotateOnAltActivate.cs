@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace TweaksAndFixes.Scripts
+namespace TweaksAndFixes.MonoBehaviourScripts
 {
     internal class ShipItemRotateOnAltActivate : MonoBehaviour
     {
@@ -15,7 +15,7 @@ namespace TweaksAndFixes.Scripts
 
         public float targetAngle = -22f;
 
-        void Awake()
+        private void Awake()
         {
             shipItem = GetComponent<ShipItem>();
         }
