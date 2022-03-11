@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32126.317
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LowerGraphics", "LowerGraphics\LowerGraphics.csproj", "{B5CF81C5-3166-46A8-8A03-36C8D72ECFE4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B5CF81C5-3166-46A8-8A03-36C8D72ECFE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5CF81C5-3166-46A8-8A03-36C8D72ECFE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5CF81C5-3166-46A8-8A03-36C8D72ECFE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5CF81C5-3166-46A8-8A03-36C8D72ECFE4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {01DCB7B8-09CE-4951-B3D3-BBC22219C65C}
+	EndGlobalSection
+EndGlobal
